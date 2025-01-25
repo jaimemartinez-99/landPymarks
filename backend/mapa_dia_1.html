@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_6a36b696190a15caec02486367a13a1d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_6a36b696190a15caec02486367a13a1d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_6a36b696190a15caec02486367a13a1d = L.map(
+                "map_6a36b696190a15caec02486367a13a1d",
+                {
+                    center: [37.8842, -4.7776],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 14,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f1c9f718a35c84eae6831a2838f47c07 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f1c9f718a35c84eae6831a2838f47c07.addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var marker_07f716f09b144b3c71ef0388d329fa6d = L.marker(
+                [37.8842, -4.7776],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_8b55d1d86aa3639425f753c0c2fd1efe = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e1\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_07f716f09b144b3c71ef0388d329fa6d.setIcon(div_icon_8b55d1d86aa3639425f753c0c2fd1efe);
+        
+    
+        var popup_ad88837692c671ca1be23483a45adecb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_57556d9be3b9824b53f7c7871f0b5bd6 = $(`<div id="html_57556d9be3b9824b53f7c7871f0b5bd6" style="width: 100.0%; height: 100.0%;">Plaza de la Corredera</div>`)[0];
+                popup_ad88837692c671ca1be23483a45adecb.setContent(html_57556d9be3b9824b53f7c7871f0b5bd6);
+            
+        
+
+        marker_07f716f09b144b3c71ef0388d329fa6d.bindPopup(popup_ad88837692c671ca1be23483a45adecb)
+        ;
+
+        
+    
+    
+            var marker_b40e1c6a65a4d77360355b5feccd91ec = L.marker(
+                [37.8848, -4.7757],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_8daea27cdf5631168e96b1155dca2e63 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e2\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_b40e1c6a65a4d77360355b5feccd91ec.setIcon(div_icon_8daea27cdf5631168e96b1155dca2e63);
+        
+    
+        var popup_2cbfa9144e56c791c6d2ec53dc1ecb9f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3d83a66451d8b26ac9f1042dbd5d37f2 = $(`<div id="html_3d83a66451d8b26ac9f1042dbd5d37f2" style="width: 100.0%; height: 100.0%;">Templo Romano</div>`)[0];
+                popup_2cbfa9144e56c791c6d2ec53dc1ecb9f.setContent(html_3d83a66451d8b26ac9f1042dbd5d37f2);
+            
+        
+
+        marker_b40e1c6a65a4d77360355b5feccd91ec.bindPopup(popup_2cbfa9144e56c791c6d2ec53dc1ecb9f)
+        ;
+
+        
+    
+    
+            var marker_7c798f2011f91c910b7f711be3607cb6 = L.marker(
+                [37.882, -4.7775],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_817106a5de840e306508487400cf937e = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e3\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_7c798f2011f91c910b7f711be3607cb6.setIcon(div_icon_817106a5de840e306508487400cf937e);
+        
+    
+        var popup_be9322effe0d0386d7fcb9bcb2d36c30 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_41b661862c079524ce7335967c5039f2 = $(`<div id="html_41b661862c079524ce7335967c5039f2" style="width: 100.0%; height: 100.0%;">Museo Julio Romero de Torres</div>`)[0];
+                popup_be9322effe0d0386d7fcb9bcb2d36c30.setContent(html_41b661862c079524ce7335967c5039f2);
+            
+        
+
+        marker_7c798f2011f91c910b7f711be3607cb6.bindPopup(popup_be9322effe0d0386d7fcb9bcb2d36c30)
+        ;
+
+        
+    
+    
+            var marker_2c38650dffda77b99ea91df1faaf7d39 = L.marker(
+                [37.8819, -4.7776],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_19bb9d4cfe4b7f97b33576644e066c3c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e4\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_2c38650dffda77b99ea91df1faaf7d39.setIcon(div_icon_19bb9d4cfe4b7f97b33576644e066c3c);
+        
+    
+        var popup_c777d0cb1665a4b24e69564a8c24f212 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f4b312231fed069d78675fa848d207c9 = $(`<div id="html_f4b312231fed069d78675fa848d207c9" style="width: 100.0%; height: 100.0%;">Plaza del Potro</div>`)[0];
+                popup_c777d0cb1665a4b24e69564a8c24f212.setContent(html_f4b312231fed069d78675fa848d207c9);
+            
+        
+
+        marker_2c38650dffda77b99ea91df1faaf7d39.bindPopup(popup_c777d0cb1665a4b24e69564a8c24f212)
+        ;
+
+        
+    
+    
+            var marker_26899334c0904387deba333de1550e21 = L.marker(
+                [37.8809, -4.7781],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_f95cbc3f975d28df0204ebb1d9a09031 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e5\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_26899334c0904387deba333de1550e21.setIcon(div_icon_f95cbc3f975d28df0204ebb1d9a09031);
+        
+    
+        var popup_5a84cb8ce0e01b571287e092bfe9797b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ddee910f69c19e0978748571f90942fc = $(`<div id="html_ddee910f69c19e0978748571f90942fc" style="width: 100.0%; height: 100.0%;">Museo Arqueológico de Córdoba</div>`)[0];
+                popup_5a84cb8ce0e01b571287e092bfe9797b.setContent(html_ddee910f69c19e0978748571f90942fc);
+            
+        
+
+        marker_26899334c0904387deba333de1550e21.bindPopup(popup_5a84cb8ce0e01b571287e092bfe9797b)
+        ;
+
+        
+    
+    
+            var marker_f78be216e7439d1d182fa02d63358042 = L.marker(
+                [37.8905, -4.7745],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_98003cd5c3ab5be9fafaec2edc7cd8f8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e6\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_f78be216e7439d1d182fa02d63358042.setIcon(div_icon_98003cd5c3ab5be9fafaec2edc7cd8f8);
+        
+    
+        var popup_5a38ec990501b95e07e9181def5052d2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3e7fdc6759e4f7c30c84e1cc9df022b5 = $(`<div id="html_3e7fdc6759e4f7c30c84e1cc9df022b5" style="width: 100.0%; height: 100.0%;">Palacio de Viana</div>`)[0];
+                popup_5a38ec990501b95e07e9181def5052d2.setContent(html_3e7fdc6759e4f7c30c84e1cc9df022b5);
+            
+        
+
+        marker_f78be216e7439d1d182fa02d63358042.bindPopup(popup_5a38ec990501b95e07e9181def5052d2)
+        ;
+
+        
+    
+    
+            var marker_5e4179794f67dfc6e67f242bd1cba393 = L.marker(
+                [37.8886, -4.7901],
+                {
+}
+            ).addTo(map_6a36b696190a15caec02486367a13a1d);
+        
+    
+            var div_icon_64c8713ee581dd4d34355937e516c3d1 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;\"\u003e7\u003c/div\u003e",
+  "iconSize": [30, 30],
+  "iconAnchor": [15, 15],
+  "className": "empty",
+});
+            marker_5e4179794f67dfc6e67f242bd1cba393.setIcon(div_icon_64c8713ee581dd4d34355937e516c3d1);
+        
+    
+        var popup_75bc5c0a2130e4a7ff74958c1976d984 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c158ea775863bca303c2b195aad3ddc5 = $(`<div id="html_c158ea775863bca303c2b195aad3ddc5" style="width: 100.0%; height: 100.0%;">Jardín Botánico de Córdoba</div>`)[0];
+                popup_75bc5c0a2130e4a7ff74958c1976d984.setContent(html_c158ea775863bca303c2b195aad3ddc5);
+            
+        
+
+        marker_5e4179794f67dfc6e67f242bd1cba393.bindPopup(popup_75bc5c0a2130e4a7ff74958c1976d984)
+        ;
+
+        
+    
+</script>
+</html>
