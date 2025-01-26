@@ -3,8 +3,8 @@ import folium
 from typing import List
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
-
-from divider import dividir_en_dias
+from loguru import logger
+from fastapi.middleware.cors import CORSMiddleware
 from optimizer import optimizar_ruta, agrupar_puntos
 from deepseek import obtener_recomendaciones_deepseek
 
@@ -15,6 +15,14 @@ class Lugar(BaseModel):
 
 # Crear la aplicación FastAPI
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todos los orígenes (en producción, cambia esto a tu dominio)
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
+    allow_headers=["*"],  # Permite todos los headers
+)
 
 # Endpoint para generar y guardar los mapas
 @app.post("/generar-ruta/")
@@ -32,7 +40,7 @@ async def generar_ruta(ciudad: str, num_dias: int):
     for i, grupo in enumerate(grupos):
         # Optimizar la ruta dentro de cada grupo
         ruta_optimizada = optimizar_ruta(grupo)
-        
+        mapas_html = []
         # Crear el mapa
         mapa = folium.Map(location=ruta_optimizada[0]["coords"], zoom_start=14)
         for j, lugar in enumerate(ruta_optimizada):
@@ -47,10 +55,13 @@ async def generar_ruta(ciudad: str, num_dias: int):
                 popup=lugar["nombre"],
                 icon=icono,
             ).add_to(mapa)
+            logger.info("Mapa guardado correctamente")
+            logger.info(f"{j+1}. {lugar['nombre']}")
         # Guardar el mapa en un archivo HTML
         mapa.save(f"mapa_dia_{i+1}.html")
+        mapas_html.append(mapa._repr_html_())
 
-    return {"message": f"Mapas guardados correctamente en {os.getcwd()}"}
+    return {"mapas": mapas_html}
 
 # Ejecutar el servidor
 if __name__ == "__main__":
