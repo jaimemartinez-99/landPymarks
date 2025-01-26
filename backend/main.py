@@ -35,12 +35,12 @@ async def generar_ruta(ciudad: str, num_dias: int):
 
     # Agrupar los puntos en clusters
     grupos = agrupar_puntos(lugares, num_dias)
-
+    mapas_html = []
     # Crear un mapa para cada día y guardarlo en un archivo HTML
     for i, grupo in enumerate(grupos):
         # Optimizar la ruta dentro de cada grupo
         ruta_optimizada = optimizar_ruta(grupo)
-        mapas_html = []
+
         # Crear el mapa
         mapa = folium.Map(location=ruta_optimizada[0]["coords"], zoom_start=14)
         for j, lugar in enumerate(ruta_optimizada):
@@ -60,7 +60,6 @@ async def generar_ruta(ciudad: str, num_dias: int):
         # Guardar el mapa en un archivo HTML
         mapa.save(f"mapa_dia_{i+1}.html")
         mapas_html.append(mapa._repr_html_())
-
     return {"mapas": mapas_html}
 
 # Ejecutar el servidor
