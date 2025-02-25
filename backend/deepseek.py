@@ -1,16 +1,16 @@
+import os
 import re
 import json
 import requests
 from loguru import logger
 from fastapi import HTTPException
 
-with open('necessary_files/secret.txt', 'r') as file:
-    api_key = file.read().strip()
+# Obtener la API key de la variable de entorno
+DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
+if not DEEPSEEK_API_KEY:
+    raise ValueError("La variable de entorno DEEPSEEK_API_KEY no está definida.")
 
-# Configuración de la API de DeepSeek
-DEEPSEEK_API_KEY = api_key  # Reemplaza con tu API key
-DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"  # URL de ejemplo (ajusta según la API real)
-
+DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
 # Función para llamar a la API de DeepSeek y obtener recomendaciones
 def obtener_recomendaciones_deepseek(ciudad, num_dias):
     logger.info(f"Obteniendo recomendaciones de DeepSeek para {num_dias} días en {ciudad}")
