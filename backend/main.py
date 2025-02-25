@@ -58,7 +58,6 @@ async def generar_ruta(ciudad: str, num_dias: int):
             logger.info("Mapa guardado correctamente")
             logger.info(f"{j+1}. {lugar['nombre']}")
         # Guardar el mapa en un archivo HTML
-        mapa.save(f"mapa_dia_{i+1}.html")
         mapas_html.append(mapa._repr_html_())
     return {"mapas": mapas_html}
 
