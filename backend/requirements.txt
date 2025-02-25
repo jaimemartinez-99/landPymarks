@@ -2,11 +2,11 @@ fastapi==0.111.0
 uvicorn==0.30.1
 geopy==2.4.1
 folium==0.19.4
-scikit-learn==1.4.2
+scikit-learn>=1.5.0
 numpy==2.2.2
 k-means-constrained>=0.7.2
 requests==2.32.3
-python-multipart==0.0.9
+python-multipart>=0.0.18
 openai==1.60.1
 loguru==0.7.2
 typing_extensions==4.11.0
