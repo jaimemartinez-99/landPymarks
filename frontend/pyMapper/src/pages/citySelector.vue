@@ -102,7 +102,7 @@ const generateRoute = async () => {
     localStorage.setItem('num_dias', numberOfDays.value);
     console.log('Maps saved to localStorage.'); // Log de guardado en localStorage
 
-    router.push({ path: `/${uuid}` }); // Use the route name and pass the UUID
+    router.push({ path: `/map/${uuid}` }); // Use the route name and pass the UUID
     } catch (error) {
     console.error('Error generating route:', error); // Log de error
     alert('Error generating route. Please try again.');
