@@ -67,18 +67,18 @@ async def generar_ruta(ciudad: str, num_dias: int):
             logger.info(f"{j+1}. {lugar['nombre']}")
         # Guardar el mapa en un archivo HTML
         mapas_html.append(mapa._repr_html_())
-        mongo_document = {
-            "uuid": uuid_str,
-            "ciudad": ciudad,
-            "num_dias": num_dias,
-            "mapas": mapas_html,
-            "fecha_creacion": datetime.utcnow(),
-        } 
-        try:
-            result = collection.insert_one(mongo_document)
-        except Exception as e:
-            logger.error(f"Error inserting document into MongoDB: {str(e)}")
-            raise HTTPException(status_code=500, detail="Error saving to database")
+    mongo_document = {
+        "uuid": uuid_str,
+        "ciudad": ciudad,
+        "num_dias": num_dias,
+        "mapas": mapas_html,
+        "fecha_creacion": datetime.utcnow(),
+    } 
+    try:
+        result = collection.insert_one(mongo_document)
+    except Exception as e:
+        logger.error(f"Error inserting document into MongoDB: {str(e)}")
+        raise HTTPException(status_code=500, detail="Error saving to database")
     return {"mapas": mapas_html, "link":uuid_str }
 
 
@@ -87,7 +87,7 @@ async def get_map(uuid: str):
     document = collection.find_one({"uuid": uuid})
     if document:
         return {
-            "mapas": document["mapas"],
+            "mapas": document["mapas"], "ciudad": document["ciudad"], "num_dias": document["num_dias"]
         }
     else:
         raise HTTPException(status_code=404, detail="Map not found")

@@ -85,7 +85,7 @@ const generateRoute = async () => {
   loading.value = true; // Activar el loader
   console.log('Generating route...'); // Log de inicio
 
-  const url = `https://landpymarks.onrender.com/generar-ruta/?ciudad=${encodeURIComponent(city.value)}&num_dias=${parseInt(numberOfDays.value)}`;
+  const url = `http://127.0.0.1:8000/generar-ruta/?ciudad=${encodeURIComponent(city.value)}&num_dias=${parseInt(numberOfDays.value)}`;
   try {
     console.log('Sending request to backend...'); // Log de la solicitud
     const response = await axios.post(url, null, {
@@ -98,6 +98,8 @@ const generateRoute = async () => {
     const uuid = response.data.link;
 
     localStorage.setItem(response.data.link, JSON.stringify(response.data.mapas));
+    localStorage.setItem('ciudad', city.value);
+    localStorage.setItem('num_dias', numberOfDays.value);
     console.log('Maps saved to localStorage.'); // Log de guardado en localStorage
 
     router.push({ path: `/${uuid}` }); // Use the route name and pass the UUID

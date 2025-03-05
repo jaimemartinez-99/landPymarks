@@ -4,28 +4,22 @@
       <v-col cols="12" md="8">
         <v-card class="pa-6" elevation="10">
           <v-card-title class="text-h3 font-weight-bold text-center mb-6 text-primary">
-            Generated Maps
+            {{ capitalize(ciudad) }}
+            -
+            {{ num_dias }} {{ capitalize(pluralizeDay(num_dias))}}
           </v-card-title>
-          <v-card-subtitle class="text-h6 text-center mb-8 text-secondary">
-            Explore the optimized routes for your trip.
-          </v-card-subtitle>
-          <v-card-subtitle class="text-h6 text-center mb-8 text-secondary">
-            Beware the maps are not real, they are just a representation of the optimized routes and exact locations may vary from the representation
-          </v-card-subtitle>
 
-          <!-- Mostrar los mapas generados -->
           <div v-for="(mapa, index) in mapas" :key="index" class="mb-6">
             <v-card>
               <v-card-title class="text-h5 font-weight-bold">
                 Day {{ index + 1 }}
               </v-card-title>
               <v-card-text>
-                <div v-html="mapa"></div> <!-- Renderizar el mapa -->
+                <div v-html="mapa"></div> 
               </v-card-text>
             </v-card>
           </div>
 
-          <!-- Botón para regresar -->
           <v-btn
             color="primary"
             size="large"
@@ -44,22 +38,38 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute  } from 'vue-router';
 
-const mapas = ref([]); // Array para almacenar los mapas
+const mapas = ref([]); 
+const ciudad = ref(''); 
+let num_dias = 0;
 const router = useRouter();
 const route = useRoute();
-// Obtener los mapas desde localStorage
+
+const capitalize = (text) => {
+  if (!text) return '';
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};
+
+const pluralizeDay = (num) => {
+  return num > 1 ? 'days' : 'day';
+};
+
 onMounted(() => {
   const uuid = route.params.uuid;
   const mapasGuardados = localStorage.getItem(uuid);
+  const ciudadGuardada = localStorage.getItem('ciudad');
+  const numDiasGuardados = localStorage.getItem('num_dias');
   console.log(uuid);
   if (mapasGuardados) {
     mapas.value = JSON.parse(mapasGuardados);
+    ciudad.value = ciudadGuardada;
+    num_dias = numDiasGuardados;
   } else {
-    // Petición a la API para recuperar los mapas directamente del link a través de uuid
-    fetch(`https://landpymarks.onrender.com/recuperar_mapa_existente/${uuid}`)
+    fetch(`http://127.0.0.1:8000/recuperar_mapa_existente/${uuid}`)
       .then(response => response.json())
       .then(data => {
         mapas.value = data.mapas;
+        ciudad.value = data.ciudad; 
+        num_dias = data.num_dias;
         console.log
       })
       .catch(error => {
@@ -68,8 +78,6 @@ onMounted(() => {
   }
 });
 
-
-// Función para regresar a la página anterior
 const goBack = () => {
   router.push('/');
 };
@@ -79,18 +87,19 @@ const goBack = () => {
 .maps-container {
   padding-top: 100px;
   padding-bottom: 100px;
-  min-height: 100vh; /* Cubre toda la pantalla */
+  min-height: 100vh; 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .text-primary {
-  color: #1976d2; /* Color primario de Vuetify */
+  color: #1976d2;
+  text-transform: capitalize; 
 }
 
 .text-secondary {
-  color: #f8f8f8; /* Color secundario de Vuetify */
+  color: #f8f8f8; 
   font-size: 10px;
   
 }
