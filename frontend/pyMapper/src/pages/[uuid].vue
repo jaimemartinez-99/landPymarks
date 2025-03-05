@@ -58,7 +58,6 @@ onMounted(() => {
   const mapasGuardados = localStorage.getItem(uuid);
   const ciudadGuardada = localStorage.getItem('ciudad');
   const numDiasGuardados = localStorage.getItem('num_dias');
-  console.log(uuid);
   if (mapasGuardados) {
     mapas.value = JSON.parse(mapasGuardados);
     ciudad.value = ciudadGuardada;
@@ -70,7 +69,7 @@ onMounted(() => {
         mapas.value = data.mapas;
         ciudad.value = data.ciudad; 
         num_dias = data.num_dias;
-        console.log
+  
       })
       .catch(error => {
         console.error('Error fetching data:', error);
