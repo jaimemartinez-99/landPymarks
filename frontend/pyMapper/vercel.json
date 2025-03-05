@@ -4,17 +4,5 @@
         "source": "/map/:uuid",
         "destination": "/[uuid].vue"
       }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/api/$1"
-      }
-    ],
-    "build": {
-      "env": {
-        "NODE_ENV": "production"
-      }
-    }
+    ]
   }
-  
