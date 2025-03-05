@@ -95,12 +95,13 @@ const generateRoute = async () => {
     });
 
     console.log('Response from backend:', response.data); // Log de la respuesta
+    const uuid = response.data.link;
 
-    localStorage.setItem('mapas', JSON.stringify(response.data.mapas));
+    localStorage.setItem(response.data.link, JSON.stringify(response.data.mapas));
     console.log('Maps saved to localStorage.'); // Log de guardado en localStorage
 
-    router.push('/maps');
-  } catch (error) {
+    router.push({ path: `/${uuid}` }); // Use the route name and pass the UUID
+    } catch (error) {
     console.error('Error generating route:', error); // Log de error
     alert('Error generating route. Please try again.');
   } finally {
