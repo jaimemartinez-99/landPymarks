@@ -1,3 +1,4 @@
+import os
 import uuid
 from pymongo import MongoClient
 import folium
@@ -26,9 +27,16 @@ app.add_middleware(
     allow_headers=["*"],  # Permite todos los headers
 )
 
-client = MongoClient("mongodb://localhost:27017/")  # Cambia la URL si es necesario
-db = client["optimapper"]  # Nombre de la base de datos
-collection = db["generatedRoutes"]  # Nombre de la colección
+db_user= os.environ.get("DB_USER")
+db_password= os.environ.get("DB_PASSWORD")
+db = os.environ.get("DB")
+db_collection = os.environ.get("DB_COLLECTION")
+
+client = MongoClient(
+    f"mongodb+srv://{db_user}:{db_password}@cluster0.2ocgo.mongodb.net/optimapper?retryWrites=true&w=majority&appName=Cluster0"
+)
+db = client[db]
+collection = db[db_collection]
 
 # Endpoint para generar y guardar los mapas
 @app.post("/generar-ruta/")
