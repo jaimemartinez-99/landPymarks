@@ -35,8 +35,8 @@ db_collection = os.environ.get("DB_COLLECTION")
 client = MongoClient(
     f"mongodb+srv://{db_user}:{db_password}@cluster0.2ocgo.mongodb.net/optimapper?retryWrites=true&w=majority&appName=Cluster0"
 )
-db = client[db]
-collection = db[db_collection]
+db = client["optimapper"]
+collection = db["generatedRoutes"]
 
 # Endpoint para generar y guardar los mapas
 @app.post("/generar-ruta/")
@@ -84,9 +84,11 @@ async def generar_ruta(ciudad: str, num_dias: int):
     } 
     try:
         result = collection.insert_one(mongo_document)
+        logger.info(f"Document inserted with _id: {result.inserted_id}")
     except Exception as e:
         logger.error(f"Error inserting document into MongoDB: {str(e)}")
         raise HTTPException(status_code=500, detail="Error saving to database")
+    
     return {"mapas": mapas_html, "link":uuid_str }
 
 

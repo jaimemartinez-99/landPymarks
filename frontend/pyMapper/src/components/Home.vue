@@ -9,7 +9,7 @@
             Explore the best attractions and save time with our intelligent route planner.
           </p>
           <v-btn color="primary" size="large" @click="goToCitySelector">
-            Get Started
+            Start Planning Now
           </v-btn>
         </v-col>
       </v-row>
@@ -39,16 +39,6 @@
           <p class="text-body-1">
             Plan your trip for any number of days and customize your experience.
           </p>
-        </v-col>
-      </v-row>
-  
-      <!-- Call to Action Section -->
-      <v-row justify="center" class="cta-section mt-12">
-        <v-col cols="12" class="text-center">
-          <h2 class="text-h4 font-weight-bold mb-6">Ready to Explore?</h2>
-          <v-btn color="primary" size="large" @click="goToCitySelector">
-            Start Planning Now
-          </v-btn>
         </v-col>
       </v-row>
     </v-container>
