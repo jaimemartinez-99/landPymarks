@@ -1,8 +1,5 @@
 {
     "rewrites": [
-      {
-        "source": "/map/:uuid",
-        "destination": "/[uuid].vue"
-      }
+      { "source": "/(.*)", "destination": "/index.html" }
     ]
   }
