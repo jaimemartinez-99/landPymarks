@@ -35,8 +35,8 @@ db_collection = os.environ.get("DB_COLLECTION")
 client = MongoClient(
     f"mongodb+srv://{db_user}:{db_password}@cluster0.2ocgo.mongodb.net/optimapper?retryWrites=true&w=majority&appName=Cluster0"
 )
-db = client["optimapper"]
-collection = db["generatedRoutes"]
+db = client[db]
+collection = db[db_collection]
 
 # Endpoint para generar y guardar los mapas
 @app.post("/generar-ruta/")
