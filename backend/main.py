@@ -10,6 +10,7 @@ from loguru import logger
 from fastapi.middleware.cors import CORSMiddleware
 from optimizer import optimizar_ruta, agrupar_puntos
 from deepseek import obtener_recomendaciones_deepseek
+from places import update_coordinates, delete_duplicates
 
 # Definir el modelo de datos para los lugares
 class Lugar(BaseModel):
@@ -41,14 +42,16 @@ collection = db[db_collection]
 # Endpoint para generar y guardar los mapas
 @app.post("/generar-ruta/")
 async def generar_ruta(ciudad: str, num_dias: int):
+    city = ciudad
     # Obtener recomendaciones de DeepSeek
     try:
         lugares = obtener_recomendaciones_deepseek(ciudad, num_dias)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    lugares_unicos = delete_duplicates(lugares)
+    lugares_finales = update_coordinates(lugares_unicos, ciudad)
     # Agrupar los puntos en clusters
-    grupos = agrupar_puntos(lugares, num_dias)
+    grupos = agrupar_puntos(lugares_finales, num_dias)
     mapas_html = []
     uuid_str = str(uuid.uuid4())
     

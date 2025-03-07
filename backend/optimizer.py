@@ -45,7 +45,10 @@ def optimizar_ruta(puntos):
 # Función para agrupar los puntos en clusters equilibrados
 def agrupar_puntos(puntos, num_dias):
     # Extraer las coordenadas
-    coordenadas = np.array([punto["coords"] for punto in puntos])
+    puntos = [p for p in puntos if p["coords"] is not None]
+
+    # Extraer las coordenadas
+    coordenadas = np.array([p["coords"] for p in puntos], dtype=float)
     
     # Calcular el tamaño mínimo y máximo de cada cluster
     min_size = len(puntos) // num_dias
