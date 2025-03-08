@@ -8,24 +8,22 @@ from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 from loguru import logger
 from fastapi.middleware.cors import CORSMiddleware
-from optimizer import optimizar_ruta, agrupar_puntos
-from deepseek import obtener_recomendaciones_deepseek
+from optimizer import optimize_route, group_points
+from deepseek import get_deepseek_recomendations
 from places import update_coordinates, delete_duplicates
 
-# Definir el modelo de datos para los lugares
-class Lugar(BaseModel):
+class Place(BaseModel):
     nombre: str
     coords: List[float]
 
-# Crear la aplicación FastAPI
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite todos los orígenes (en producción, cambia esto a tu dominio)
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permite todos los headers
+    allow_methods=["*"],  
+    allow_headers=["*"], 
 )
 
 db_user= os.environ.get("DB_USER")
@@ -39,51 +37,45 @@ client = MongoClient(
 db = client[db]
 collection = db[db_collection]
 
-# Endpoint para generar y guardar los mapas
-@app.post("/generar-ruta/")
-async def generar_ruta(ciudad: str, num_dias: int):
-    city = ciudad
-    # Obtener recomendaciones de DeepSeek
+
+@app.post("/generate-route/")
+async def generate_route(city: str, num_days: int):
     try:
-        lugares = obtener_recomendaciones_deepseek(ciudad, num_dias)
+        places = get_deepseek_recomendations(city, num_days)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    lugares_unicos = delete_duplicates(lugares)
-    lugares_finales = update_coordinates(lugares_unicos, ciudad)
-    # Agrupar los puntos en clusters
-    grupos = agrupar_puntos(lugares_finales, num_dias)
-    mapas_html = []
+    unique_places = delete_duplicates(places)
+    final_places = update_coordinates(unique_places, city)
+    groups = group_points(final_places, num_days)
+    html_maps = []
     uuid_str = str(uuid.uuid4())
     
-    # Crear un mapa para cada día y guardarlo en un archivo HTML
-    for i, grupo in enumerate(grupos):
-        # Optimizar la ruta dentro de cada grupo
-        ruta_optimizada = optimizar_ruta(grupo)
+    for i, group in enumerate(groups):
+        optimized_route = optimize_route(group)
 
-        # Crear el mapa
-        mapa = folium.Map(location=ruta_optimizada[0]["coords"], zoom_start=14)
-        for j, lugar in enumerate(ruta_optimizada):
-            # Crear un ícono personalizado con un número
-            icono = folium.DivIcon(
+        map = folium.Map(location=optimized_route[0]["coords"], zoom_start=14)
+        for j, place in enumerate(optimized_route):
+            
+            icon = folium.DivIcon(
                 icon_size=(30, 30),
                 icon_anchor=(15, 15),
                 html=f'<div style="font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;">{j+1}</div>'
             )
             folium.Marker(
-                location=lugar["coords"],
-                popup=lugar["nombre"],
-                icon=icono,
-            ).add_to(mapa)
-            logger.info("Mapa guardado correctamente")
-            logger.info(f"{j+1}. {lugar['nombre']}")
-        # Guardar el mapa en un archivo HTML
-        mapas_html.append(mapa._repr_html_())
+                location=place["coords"],
+                popup=place["nombre"],
+                icon=icon,
+            ).add_to(map)
+            logger.info("Map saved correctly")
+            logger.info(f"{j+1}. {place['nombre']}")
+        map.save(f"mapa_{uuid_str}_{i+1}.html")
+        html_maps.append(map._repr_html_())
     mongo_document = {
         "uuid": uuid_str,
-        "ciudad": ciudad,
-        "num_dias": num_dias,
-        "mapas": mapas_html,
-        "fecha_creacion": datetime.utcnow(),
+        "city": city,
+        "num_days": num_days,
+        "maps": html_maps,
+        "creation_date": datetime.utcnow(),
     } 
     try:
         result = collection.insert_one(mongo_document)
@@ -92,15 +84,15 @@ async def generar_ruta(ciudad: str, num_dias: int):
         logger.error(f"Error inserting document into MongoDB: {str(e)}")
         raise HTTPException(status_code=500, detail="Error saving to database")
     
-    return {"mapas": mapas_html, "link":uuid_str }
+    return {"maps": html_maps, "link":uuid_str }
 
 
-@app.get("/recuperar_mapa_existente/{uuid}")
+@app.get("/retrieve_existing_map/{uuid}")
 async def get_map(uuid: str):
     document = collection.find_one({"uuid": uuid})
     if document:
         return {
-            "mapas": document["mapas"], "ciudad": document["ciudad"], "num_dias": document["num_dias"]
+            "maps": document["maps"], "city": document["city"], "num_days": document["num_days"]
         }
     else:
         raise HTTPException(status_code=404, detail="Map not found")
