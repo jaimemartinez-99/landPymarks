@@ -1,30 +1,37 @@
 import folium
-import itertools
+import numpy as np
+import networkx as nx
 import time
 from calculator import calculate_distance_kilometers
 from loguru import logger
 
+def compute_distance_matrix(coordinates):
+    num_points = len(coordinates)
+    distance_matrix = np.zeros((num_points, num_points))
+    
+    for i in range(num_points):
+        for j in range(i + 1, num_points):
+            dist = calculate_distance_kilometers(coordinates[i], coordinates[j])
+            distance_matrix[i, j] = dist
+            distance_matrix[j, i] = dist  
+
+    return distance_matrix
+
+def solve_tsp_optimized(distance_matrix):
+    G = nx.Graph()
+    for i in range(len(distance_matrix)):
+        for j in range(i + 1, len(distance_matrix)):
+            G.add_edge(i, j, weight=distance_matrix[i, j])
+
+    return nx.approximation.traveling_salesman_problem(G, cycle=False)
 
 def solve_tsp_and_create_map(coordinates, names):
     start_time = time.time()
 
-    distance_matrix = {}
-    for i, j in itertools.combinations(range(len(coordinates)), 2):
-        dist = calculate_distance_kilometers(coordinates[i], coordinates[j]) 
-        distance_matrix[(i, j)] = dist
-        distance_matrix[(j, i)] = dist  
-
+    distance_matrix = compute_distance_matrix(coordinates)
     tsp_start = time.time()
-    tsp_path = list(itertools.permutations(range(len(coordinates))))
-    shortest_distance = float("inf")
-    best_path = None
-    for path in tsp_path:
-        total_distance = 0
-        for i in range(len(path) - 1):
-            total_distance += distance_matrix.get((path[i], path[i+1]), float("inf"))
-        if total_distance < shortest_distance:
-            shortest_distance = total_distance
-            best_path = path
+    
+    best_path = solve_tsp_optimized(distance_matrix)
 
     tsp_end = time.time()
     logger.info(f"Time for TSP problem: {tsp_end - tsp_start:.2f} seconds")
@@ -34,24 +41,22 @@ def solve_tsp_and_create_map(coordinates, names):
     map_creation_start = time.time()
     m = folium.Map(location=coordinates[0], zoom_start=14)
 
-   
+    marker_group = folium.FeatureGroup(name="Markers")
     for i, idx in enumerate(best_path): 
-        coord = coordinates[idx]
-        name = names[idx]  
         folium.Marker(
-            location=coord,
-            popup=f"Point {i+1}: {name}",  
+            location=coordinates[idx],
+            popup=f"Point {i+1}: {names[idx]}",  
             icon=folium.Icon(color="blue", icon="info-sign"),
-        ).add_to(m)
+        ).add_to(marker_group)
+
+    marker_group.add_to(m)
 
     colors = ["red", "blue", "green", "purple", "orange", "darkred", "darkblue", "darkgreen", "cadetblue", "pink"]
 
     for i in range(len(optimized_route) - 1):
-        origin_coord, destination_coord = optimized_route[i], optimized_route[i + 1]
-
-        route_coords = [origin_coord, destination_coord]
-        route_color = colors[i % len(colors)]  
-        folium.PolyLine(route_coords, color=route_color, weight=4, opacity=0.7).add_to(m)
+        folium.PolyLine([optimized_route[i], optimized_route[i+1]], 
+                        color=colors[i % len(colors)], 
+                        weight=4, opacity=0.7).add_to(m)
 
     map_creation_end = time.time()
     logger.info(f"Map creation time: {map_creation_end - map_creation_start:.2f} seconds")
@@ -59,4 +64,3 @@ def solve_tsp_and_create_map(coordinates, names):
     total_time = time.time() - start_time
     logger.info(f"Total execution time: {total_time:.2f} seconds")
     return m
- 
