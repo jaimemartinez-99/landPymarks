@@ -94,7 +94,7 @@ const generateRoute = async () => {
 
     const uuid = response.data.link;
 
-    localStorage.setItem(response.data.link, JSON.stringify(response.data.mapas));
+    localStorage.setItem(response.data.link, JSON.stringify(response.data.maps));
     localStorage.setItem('ciudad', city.value);
     localStorage.setItem('num_dias', numberOfDays.value);
 

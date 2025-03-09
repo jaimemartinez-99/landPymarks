@@ -66,9 +66,9 @@ onMounted(() => {
     fetch(`https://landpymarks.onrender.com/retrieve_existing_map/${uuid}`)
       .then(response => response.json())
       .then(data => {
-        mapas.value = data.mapas;
-        ciudad.value = data.ciudad; 
-        num_dias = data.num_dias;
+        mapas.value = data.maps;
+        ciudad.value = data.city; 
+        num_dias = data.num_days;
   
       })
       .catch(error => {
