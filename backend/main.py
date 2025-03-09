@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from optimizer import optimize_route, group_points
 from deepseek import get_deepseek_recomendations
 from places import update_coordinates, delete_duplicates
+from nx import solve_tsp_and_create_map
 
 class Place(BaseModel):
     nombre: str
@@ -40,6 +41,7 @@ collection = db[db_collection]
 
 @app.post("/generate-route/")
 async def generate_route(city: str, num_days: int):
+    logger.info("Starting route generation")
     try:
         places = get_deepseek_recomendations(city, num_days)
     except Exception as e:
@@ -47,28 +49,14 @@ async def generate_route(city: str, num_days: int):
     unique_places = delete_duplicates(places)
     final_places = update_coordinates(unique_places, city)
     groups = group_points(final_places, num_days)
+    logger.info("Correctly divided places into groups depending in the number of days") 
     html_maps = []
     uuid_str = str(uuid.uuid4())
-    
     for i, group in enumerate(groups):
-        optimized_route = optimize_route(group)
-
-        map = folium.Map(location=optimized_route[0]["coords"], zoom_start=14)
-        for j, place in enumerate(optimized_route):
-            
-            icon = folium.DivIcon(
-                icon_size=(30, 30),
-                icon_anchor=(15, 15),
-                html=f'<div style="font-size: 12pt; color: white; background-color: blue; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px;">{j+1}</div>'
-            )
-            folium.Marker(
-                location=place["coords"],
-                popup=place["nombre"],
-                icon=icon,
-            ).add_to(map)
-            logger.info("Map saved correctly")
-            logger.info(f"{j+1}. {place['nombre']}")
-        map.save(f"mapa_{uuid_str}_{i+1}.html")
+        coords = [place['coords'] for place in group]
+        names = [place['nombre'] for place in group]    
+        
+        map = solve_tsp_and_create_map(coords,names)
         html_maps.append(map._repr_html_())
     mongo_document = {
         "uuid": uuid_str,
