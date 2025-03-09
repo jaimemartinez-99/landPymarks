@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 from loguru import logger
 from fastapi.middleware.cors import CORSMiddleware
-from optimizer import optimize_route, group_points
+from optimizer import group_points
 from deepseek import get_deepseek_recomendations
 from places import update_coordinates, delete_duplicates
 from nx import solve_tsp_and_create_map
