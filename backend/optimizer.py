@@ -1,63 +1,54 @@
 import numpy as np
 from k_means_constrained import KMeansConstrained
-from calculator import calcular_distancia
+from calculator import calculate_distance
 
-def optimizar_ruta(puntos):
-    if not puntos:
+def optimize_route(points):
+    if not points:
         return []
 
-    # Iniciar con el primer punto
-    ruta = [puntos[0]]
-    puntos_restantes = puntos[1:]
+    route = [points[0]]
+    points_left = points[1:]
 
-    while puntos_restantes:
-        # Encontrar el punto no visitado más cercano a cualquier punto de la ruta
-        punto_mas_cercano = min(
-            puntos_restantes,
-            key=lambda x: min(calcular_distancia(p["coords"], x["coords"]) for p in ruta),
+    while points_left:
+        closest_point = min(
+            points_left,
+            key=lambda x: min(calculate_distance(p["coords"], x["coords"]) for p in route),
         )
 
-        # Encontrar la posición óptima para insertar el punto
-        mejor_posicion = 0
-        mejor_distancia = float('inf')
+        best_position = 0
+        best_distance = float('inf')
 
-        for i in range(len(ruta)):
-            # Calcular la distancia si se inserta el punto entre ruta[i] y ruta[i+1]
-            distancia_antes = calcular_distancia(ruta[i]["coords"], punto_mas_cercano["coords"])
-            if i + 1 < len(ruta):
-                distancia_despues = calcular_distancia(punto_mas_cercano["coords"], ruta[i + 1]["coords"])
-                distancia_original = calcular_distancia(ruta[i]["coords"], ruta[i + 1]["coords"])
-                aumento_distancia = distancia_antes + distancia_despues - distancia_original
+        for i in range(len(route)):
+            previous_distance = calculate_distance(route[i]["coords"], closest_point["coords"])
+            if i + 1 < len(route):
+                next_distance = calculate_distance(closest_point["coords"], route[i + 1]["coords"])
+                original_distance = calculate_distance(route[i]["coords"], route[i + 1]["coords"])
+                distance_increase = previous_distance + next_distance - original_distance
             else:
-                aumento_distancia = distancia_antes
+                distance_increase = previous_distance
 
-            # Actualizar la mejor posición
-            if aumento_distancia < mejor_distancia:
-                mejor_distancia = aumento_distancia
-                mejor_posicion = i + 1
+            if distance_increase < best_distance:
+                best_distance = distance_increase
+                best_position = i + 1
 
-        # Insertar el punto en la posición óptima
-        ruta.insert(mejor_posicion, punto_mas_cercano)
-        puntos_restantes.remove(punto_mas_cercano)
+        route.insert(best_position, closest_point)
+        points_left.remove(closest_point)
 
-    return ruta
+    return route
 
-# Función para agrupar los puntos en clusters equilibrados
-def agrupar_puntos(puntos, num_dias):
-    # Extraer las coordenadas
-    coordenadas = np.array([punto["coords"] for punto in puntos])
+def group_points(points, num_days):
+    points = [p for p in points if p["coords"] is not None]
+
+    coordinates = np.array([p["coords"] for p in points], dtype=float)
     
-    # Calcular el tamaño mínimo y máximo de cada cluster
-    min_size = len(puntos) // num_dias
-    max_size = min_size + 1 if len(puntos) % num_dias != 0 else min_size
+    min_size = len(points) // num_days
+    max_size = min_size + 1 if len(points) % num_days != 0 else min_size
 
-    # Aplicar K-Means con restricciones de tamaño
-    kmeans = KMeansConstrained(n_clusters=num_dias, size_min=min_size, size_max=max_size, random_state=0)
-    kmeans.fit(coordenadas)
+    kmeans = KMeansConstrained(n_clusters=num_days, size_min=min_size, size_max=max_size, random_state=0)
+    kmeans.fit(coordinates)
     
-    # Asignar cada punto a un cluster
-    grupos = [[] for _ in range(num_dias)]
-    for i, etiqueta in enumerate(kmeans.labels_):
-        grupos[etiqueta].append(puntos[i])
+    groups = [[] for _ in range(num_days)]
+    for i, label in enumerate(kmeans.labels_):
+        groups[label].append(points[i])
     
-    return grupos
+    return groups

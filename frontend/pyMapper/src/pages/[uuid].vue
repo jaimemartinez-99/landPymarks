@@ -63,7 +63,7 @@ onMounted(() => {
     ciudad.value = ciudadGuardada;
     num_dias = numDiasGuardados;
   } else {
-    fetch(`https://landpymarks.onrender.com/recuperar_mapa_existente/${uuid}`)
+    fetch(`https://landpymarks.onrender.com/retrieve_existing_map/${uuid}`)
       .then(response => response.json())
       .then(data => {
         mapas.value = data.mapas;
