@@ -1,6 +1,6 @@
 import numpy as np
 from k_means_constrained import KMeansConstrained
-from calculator import calculate_distance
+from calculator import calculate_distance_meters
 
 def optimize_route(points):
     if not points:
@@ -12,17 +12,17 @@ def optimize_route(points):
     while points_left:
         closest_point = min(
             points_left,
-            key=lambda x: min(calculate_distance(p["coords"], x["coords"]) for p in route),
+            key=lambda x: min(calculate_distance_meters(p["coords"], x["coords"]) for p in route),
         )
 
         best_position = 0
         best_distance = float('inf')
 
         for i in range(len(route)):
-            previous_distance = calculate_distance(route[i]["coords"], closest_point["coords"])
+            previous_distance = calculate_distance_meters(route[i]["coords"], closest_point["coords"])
             if i + 1 < len(route):
-                next_distance = calculate_distance(closest_point["coords"], route[i + 1]["coords"])
-                original_distance = calculate_distance(route[i]["coords"], route[i + 1]["coords"])
+                next_distance = calculate_distance_meters(closest_point["coords"], route[i + 1]["coords"])
+                original_distance = calculate_distance_meters(route[i]["coords"], route[i + 1]["coords"])
                 distance_increase = previous_distance + next_distance - original_distance
             else:
                 distance_increase = previous_distance
