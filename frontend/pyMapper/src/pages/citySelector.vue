@@ -84,7 +84,7 @@ const router = useRouter();
 const generateRoute = async () => {
   loading.value = true; // Activar el loader
 
-  const url = `https://landpymarks.onrender.com/generate-route/?ciudad=${encodeURIComponent(city.value)}&num_dias=${parseInt(numberOfDays.value)}`;
+  const url = `https://landpymarks.onrender.com/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(numberOfDays.value)}`;
   try {
     const response = await axios.post(url, null, {
       headers: {
