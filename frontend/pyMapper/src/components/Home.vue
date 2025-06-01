@@ -154,7 +154,7 @@ const goToCitySelector = () => {
 }
 
 .hero-title {
-  font-size: 3.2rem;
+  font-size: 5rem;
   font-weight: 800;
   line-height: 1.2;
   color: #1e3a8a;
