@@ -175,15 +175,6 @@ const copyDay = (index) => {
 
 onMounted(() => {
   const uuid = route.params.uuid;
-  const mapasGuardados = localStorage.getItem(uuid);
-  const ciudadGuardada = localStorage.getItem('ciudad');
-  const numDiasGuardados = localStorage.getItem('num_dias');
-  
-  if (mapasGuardados) {
-    mapas.value = JSON.parse(mapasGuardados);
-    ciudad.value = ciudadGuardada;
-    num_dias = numDiasGuardados;
-  } else {
     fetch(`https://landpymarks.onrender.com/retrieve_existing_map/${uuid}`)
       .then(response => response.json())
       .then(data => {
@@ -196,7 +187,7 @@ onMounted(() => {
         router.push('/');
       });
   }
-});
+);
 
 const goBack = () => {
   router.push('/');
