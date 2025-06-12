@@ -10,6 +10,6 @@
 
 <style scoped>
 main {
-  background-color: #3f415b6e;
+  background-color: #e0f2fe;
 }
 </style>

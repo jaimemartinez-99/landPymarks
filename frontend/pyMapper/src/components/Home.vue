@@ -14,7 +14,7 @@
           </h1>
           <p class="hero-subtitle mt-4">
             Discover top landmarks with optimized, time-saving routes tailored
-            to your trip duration and interests.
+            to your trip duration.
           </p>
           <v-btn
             class="start-btn mt-6"
@@ -44,28 +44,28 @@
           style="max-width: 280px"
         >
           Our route optimizer calculates the best path between must-see
-          attractions in your selected city.
+          attractions in your selected city
         </p>
 
         <v-icon size="48" color="#3b82f6" class="mb-2"
           >mdi-clock-outline</v-icon
         >
-        <h3 class="text-subtitle-1 font-weight-medium" style="color: #334155">
+        <h2 class="text-h6 font-weight-bold mb-2" style="color: #334155">
           Save Time
-        </h3>
+        </h2>
         <p
           class="text-body-2 text-muted text-center mb-6"
           style="max-width: 240px"
         >
-          Avoid unnecessary detours. Focus on what matters most: exploring.
+          Avoid unnecessary detours. Focus on what matters most: exploring
         </p>
 
         <v-icon size="48" color="#3b82f6" class="mb-2">mdi-star-outline</v-icon>
-        <h3 class="text-subtitle-1 font-weight-medium" style="color: #334155">
+        <h2 class="text-h6 font-weight-bold mb-2" style="color: #334155">
           Top Picks
-        </h3>
+        </h2>
         <p class="text-body-2 text-muted text-center" style="max-width: 240px">
-          Get recommendations based on popularity, user ratings, and local tips.
+          You will receive the most popular and culturally relevant recommendations
         </p>
         <div class="flex mt-6">
           <!-- Botón GitHub -->

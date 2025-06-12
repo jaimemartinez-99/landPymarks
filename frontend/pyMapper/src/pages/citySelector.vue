@@ -1,94 +1,102 @@
 <template>
-  <v-container class="city-selector-container">
-    <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="6">
-        <v-card class="pa-3 pa-sm-4" elevation="10">
-          <!-- Title -->
-          <v-card-title class="text-h5 text-sm-h4 font-weight-bold text-center mb-3 mb-sm-4 text-primary">
-            Plan Your Trip
-          </v-card-title>
+  <v-container
+    fluid
+    class="city-days-wrapper pa-0 d-flex flex-column align-center justify-center"
+  >
+    <!-- Título Optimapper -->
+    <h1 class="optimapper-title mb-10">Optimapper</h1>
+    
+    <v-card
+      class="selector-card px-8 py-10"
+      elevation="6"
+      max-width="440"
+      outlined
+    >
+      <v-card-title class="selector-title">
+        Plan Your Trip
+      </v-card-title>
 
-          <!-- Subtitle -->
-          <v-card-subtitle class="text-caption text-sm-subtitle-1 text-center mb-3 mb-sm-4 text-secondary">
-            Enter your destination and the number of days to generate an optimized route.
-          </v-card-subtitle>
+      <v-card-text>
+        <!-- Input ciudad (libre) -->
+        <v-text-field
+          v-model="city"
+          label="Enter city"
+          outlined
+          dense
+          clearable
+          placeholder="e.g., Córdoba"
+          class="mb-6"
+        />
 
-          <!-- Form -->
-          <v-form @submit.prevent="generateRoute">
-            <!-- City Input -->
-            <v-text-field
-              v-model="city"
-              label="City"
-              required
-              outlined
-              dense
-              placeholder="Enter a city"
-              prepend-inner-icon="mdi-city"
-              class="mb-3"
-              background-color="surface"
-              :disabled="loading"
-            ></v-text-field>
+        <!-- Input días -->
+        <v-text-field
+          v-model.number="days"
+          label="Number of days"
+          type="number"
+          min="1"
+          outlined
+          dense
+          clearable
+          class="mb-6"
+          @keypress="onlyNumbers"
+        />
+      </v-card-text>
 
-            <!-- Number of Days Input -->
-            <v-text-field
-              v-model="numberOfDays"
-              label="Number of Days"
-              type="number"
-              required
-              outlined
-              dense
-              placeholder="Enter number of days"
-              prepend-inner-icon="mdi-calendar"
-              class="mb-3 mb-sm-4"
-              background-color="surface"
-              :disabled="loading"
-            ></v-text-field>
-
-            <!-- Generate Route Button -->
-            <v-btn
-              type="submit"
-              color="primary"
-              size="default"
-              block
-              @click="generateRoute"
-              :disabled="loading"
-            >
-              <span v-if="!loading">Generate Route</span>
-              <span v-else>
-                Generating...
-                <v-progress-circular
-                  indeterminate
-                  color="white"
-                  size="20"
-                  class="ml-2"
-                ></v-progress-circular>
-              </span>
-            </v-btn>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
+      <v-card-actions class="justify-center">
+        <v-btn
+          color="primary"
+          :disabled="!isValid || loading"
+          @click="goToPlanner"
+          large
+          class="select-btn"
+        >
+          <template v-if="loading">
+            <v-progress-circular
+              indeterminate
+              size="24"
+              width="3"
+              color="#1e3a8a" 
+            ></v-progress-circular>
+          </template>
+          <template v-else>
+            Start Planning
+          </template>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-container>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 const city = ref('');
-const numberOfDays = ref(0);
-const loading = ref(false); // Estado para controlar el loader
+const days = ref(0);
+const loading = ref(false);
 const router = useRouter();
 
-const generateRoute = async () => {
-  loading.value = true; // Activar el loader
+const isValid = computed(() => {
+  return city.value.trim() !== '' && days.value > 0;
+});
 
-  const url = `https://landpymarks.onrender.com/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(numberOfDays.value)}`;
+// Función para permitir solo números en input días
+const onlyNumbers = (e) => {
+  const char = String.fromCharCode(e.keyCode);
+  if (!/[0-9]/.test(char)) {
+    e.preventDefault();
+  }
+};
+
+const generateRoute = async () => {
+  loading.value = true;
+  const url = `https://landpymarks.onrender.com/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(days.value)}`;
+
   try {
     const response = await axios.post(url, null, {
       headers: {
-        'Content-Type': 'application/json', // Opcional, dependiendo del backend
+        'Content-Type': 'application/json',
       },
     });
 
@@ -96,65 +104,73 @@ const generateRoute = async () => {
 
     localStorage.setItem(response.data.link, JSON.stringify(response.data.maps));
     localStorage.setItem('ciudad', city.value);
-    localStorage.setItem('num_dias', numberOfDays.value);
+    localStorage.setItem('num_dias', days.value);
 
-    router.push({ path: `/${uuid}` }); // Use the route name and pass the UUID
-    } catch (error) {
-    console.error('Error generating route:', error); // Log de error
+    router.push({ path: `/${uuid}` });
+  } catch (error) {
+    console.error('Error generating route:', error);
     alert('Error generating route. Please try again.');
   } finally {
-    loading.value = false; // Desactivar el loader
+    loading.value = false;
   }
+};
+
+const goToPlanner = () => {
+  if (!isValid.value) return;
+  generateRoute();
 };
 </script>
 
 <style scoped>
-.city-selector-container {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  min-height: 100vh; /* Asegura que el fondo cubra toda la pantalla */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.city-days-wrapper {
+  min-height: 100vh;
+  background-color: #e0f2fe;
+  font-family: "Inter", sans-serif;
+  padding-top: 2rem;
 }
 
-.text-primary {
-  color: #1976d2 !important; /* Color primario de Vuetify */
+.optimapper-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 3rem;
+  color: #1e3a8a;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
+  margin-bottom: 1.5rem;
 }
 
-.text-secondary {
-  color: #ffffff !important; /* Color secundario de Vuetify */
+.selector-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  color: #1e3a8a;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
 }
 
-/* Adjustments for mobile devices */
-@media (max-width: 600px) {
-  .city-selector-container {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    min-height: 100vh;
-  }
+.selector-title {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #1e3a8a;
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-  .v-card {
-    padding: 12px !important; /* Smaller padding for mobile */
-  }
+.select-btn {
+  background-color: #3b82f6;
+  color: white !important;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.2s ease;
+}
 
-  .v-card-title {
-    font-size: 1.25rem !important; /* Smaller font size for mobile */
-    line-height: 1.2; /* Adjust line height for better readability */
-  }
+.select-btn:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
 
-  .v-card-subtitle {
-    font-size: 0.75rem !important; /* Smaller font size for mobile */
-    line-height: 1.3; /* Adjust line height for better readability */
-  }
-
-  .v-text-field {
-    font-size: 0.875rem !important; /* Smaller font size for input fields */
-  }
-
-  .v-btn {
-    font-size: 0.875rem !important; /* Smaller font size for button */
-    padding: 6px 12px !important; /* Adjust button padding */
-  }
+.select-btn:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-2px);
 }
 </style>
