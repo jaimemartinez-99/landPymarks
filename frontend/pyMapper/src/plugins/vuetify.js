@@ -22,8 +22,8 @@ export default createVuetify({
       dark: {
         dark: true, // Activa el tema oscuro
         colors: {
-          background: '#3f415b6e', // Fondo semitransparente
-          surface: '#2c2d3d', // Color de superficie para tarjetas y contenedores
+          background: '#e0f2fe', // Fondo semitransparente
+          surface: '#92b5d6', // Color de superficie para tarjetas y contenedores
           primary: '#1976d2', // Color primario
           secondary: '#424242', // Color secundario
           error: '#ff4444', // Color de error

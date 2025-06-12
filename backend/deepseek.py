@@ -6,7 +6,7 @@ from loguru import logger
 from fastapi import HTTPException
 
 # Obtener la API key de la variable de entorno
-DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
+DEEPSEEK_API_KEY = "sk-50d532c9fc1841c48ff8b24620f961e7"
 if not DEEPSEEK_API_KEY:
     raise ValueError("Deepseek key is not defined.")
 
@@ -16,10 +16,10 @@ def get_deepseek_recomendations(city, num_days):
     logger.info(f"Obteniendo recomendaciones de DeepSeek para {num_days} días en {city}")
     prompt = f"""
     Voy a pasar {num_days} días en {city}. Quiero que me recomiendes los mejores sitios que visitar y sus coordenadas. Cuanto mas puntos interesantes de la ciudad me recomiendes, mejor. NO DEBE superar los 15 puntos por día ni DEBE ser menor de 10 por dia.
-    La respuesta DEBE ser un JSON válido con el siguiente formato. No incluyas mas texto que el JSON:
+    La respuesta DEBE ser un JSON válido con el siguiente formato. Aunque las instrucciones hayan sido en espanol debes darme la respuesta con el nombre de los sitios en ingles. No incluyas mas texto que el JSON. :
     [
-        {{"nombre": "Nombre del lugar 1", "coords": [latitud, longitud]}},
-        {{"nombre": "Nombre del lugar 2", "coords": [latitud, longitud]}}
+        {{"nombre": "Name of the place 1", "coords": [latitud, longitud]}},
+        {{"nombre": "Name of the place 2", "coords": [latitud, longitud]}}
     ]
     """
 
