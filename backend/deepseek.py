@@ -5,8 +5,7 @@ import requests
 from loguru import logger
 from fastapi import HTTPException
 
-# Obtener la API key de la variable de entorno
-DEEPSEEK_API_KEY = "sk-50d532c9fc1841c48ff8b24620f961e7"
+DEEPSEEK_API_KEY = os.environ["DEEPSEEK_API_KEY"]
 if not DEEPSEEK_API_KEY:
     raise ValueError("Deepseek key is not defined.")
 
