@@ -5,17 +5,19 @@ import time
 from calculator import calculate_distance_kilometers
 from loguru import logger
 
+
 def compute_distance_matrix(coordinates):
     num_points = len(coordinates)
     distance_matrix = np.zeros((num_points, num_points))
-    
+
     for i in range(num_points):
         for j in range(i + 1, num_points):
             dist = calculate_distance_kilometers(coordinates[i], coordinates[j])
             distance_matrix[i, j] = dist
-            distance_matrix[j, i] = dist  
+            distance_matrix[j, i] = dist
 
     return distance_matrix
+
 
 def solve_tsp_optimized(distance_matrix):
     G = nx.Graph()
@@ -25,12 +27,13 @@ def solve_tsp_optimized(distance_matrix):
 
     return nx.approximation.traveling_salesman_problem(G, cycle=False)
 
+
 def solve_tsp_and_create_map(coordinates, names):
     start_time = time.time()
 
     distance_matrix = compute_distance_matrix(coordinates)
     tsp_start = time.time()
-    
+
     best_path = solve_tsp_optimized(distance_matrix)
 
     tsp_end = time.time()
@@ -42,10 +45,10 @@ def solve_tsp_and_create_map(coordinates, names):
     m = folium.Map(location=coordinates[0], zoom_start=14)
 
     marker_group = folium.FeatureGroup(name="Markers")
-    for i, idx in enumerate(best_path): 
+    for i, idx in enumerate(best_path):
         folium.Marker(
             location=coordinates[idx],
-            popup=f"Point {i+1}: {names[idx]}",  
+            popup=f"Point {i + 1}: {names[idx]}",
             icon=folium.Icon(color="blue", icon="info-sign"),
         ).add_to(marker_group)
 
@@ -54,8 +57,8 @@ def solve_tsp_and_create_map(coordinates, names):
     colors = ["red", "blue", "green", "purple", "orange", "darkred", "darkblue", "darkgreen", "cadetblue", "pink"]
 
     for i in range(len(optimized_route) - 1):
-        folium.PolyLine([optimized_route[i], optimized_route[i+1]], 
-                        color=colors[i % len(colors)], 
+        folium.PolyLine([optimized_route[i], optimized_route[i + 1]],
+                        color=colors[i % len(colors)],
                         weight=4, opacity=0.7).add_to(m)
 
     map_creation_end = time.time()
