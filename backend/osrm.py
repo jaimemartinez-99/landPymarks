@@ -1,9 +1,10 @@
 import requests
 import folium
+import random
 
 def get_osrm_trip_route(locations, profile='foot'):
     coords_str = ";".join([f"{lon},{lat}" for lat, lon in locations])
-    url = f"http://router.project-osrm.org/trip/v1/{profile}/{coords_str}?roundtrip=false&overview=full&geometries=geojson"
+    url = f"http://router.project-osrm.org/trip/v1/{profile}/{coords_str}?overview=full&geometries=geojson"
 
     response = requests.get(url)
     if response.status_code != 200:
@@ -20,6 +21,7 @@ def get_osrm_trip_route(locations, profile='foot'):
 
 def create_map_with_route(locations, geometry, ordered_names):
     m = folium.Map(location=locations[0], zoom_start=14)
+
     for i, ((lat, lon), name) in enumerate(zip(locations, ordered_names)):
         folium.Marker(
             location=[lat, lon],
@@ -28,10 +30,17 @@ def create_map_with_route(locations, geometry, ordered_names):
             icon=folium.Icon(color='blue', icon='info-sign')
         ).add_to(m)
 
-    raw_geometry = geometry['coordinates']
+    def random_color():
+        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
-    geometry_latlon = [[lat, lon] for lon, lat in raw_geometry]
-
-    folium.PolyLine(locations=geometry_latlon, color='red', weight=4.5, opacity=0.8).add_to(m)
+    for i in range(len(locations) - 1):
+        start = locations[i]
+        end = locations[i + 1]
+        folium.PolyLine(
+            locations=[start, end],
+            color=random_color(),
+            weight=4.5,
+            opacity=0.8
+        ).add_to(m)
 
     return m

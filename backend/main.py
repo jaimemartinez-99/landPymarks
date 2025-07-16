@@ -54,12 +54,6 @@ async def generate_route(city: str, num_days: int):
     
     html_maps = []
     uuid_str = str(uuid.uuid4())
-    # for i, group in enumerate(groups):
-    #     coords = [place['coords'] for place in group]
-    #     names = [place['nombre'] for place in group]
-    #     map = solve_tsp_and_create_map(coords,names)
-    #     map.save(f"map_{i}.html")
-    #     html_maps.append(map._repr_html_())
     for i, group in enumerate(groups, 1):
         coords = [place['coords'] for place in group]
         names = [place['nombre'] for place in group]
@@ -88,7 +82,7 @@ async def generate_route(city: str, num_days: int):
         "creation_date": datetime.utcnow(),
     } 
     try:
-        #result = collection.insert_one(mongo_document)
+        result = collection.insert_one(mongo_document)
         logger.info(f"Document inserted with _id: {result.inserted_id}")
     except Exception as e:
         logger.error(f"Error inserting document into MongoDB: {str(e)}")
