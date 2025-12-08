@@ -1,5 +1,6 @@
 import os
 import uuid
+from urllib.parse import quote_plus
 from pymongo import MongoClient
 from typing import List
 from datetime import datetime
@@ -31,8 +32,10 @@ db_password= os.environ.get("DB_PASSWORD")
 db = os.environ.get("DB")
 db_collection = os.environ.get("DB_COLLECTION")
 
+db_password_encoded = quote_plus(db_password)
+
 client = MongoClient(
-    f"mongodb+srv://{db_user}:{db_password}@cluster0.2ocgo.mongodb.net/optimapper?retryWrites=true&w=majority&appName=Cluster0"
+    f"mongodb+srv://{db_user}:{db_password_encoded}@cluster0.2ocgo.mongodb.net/optimapper?retryWrites=true&w=majority&appName=Cluster0"
 )
 db = client[db]
 collection = db[db_collection]
