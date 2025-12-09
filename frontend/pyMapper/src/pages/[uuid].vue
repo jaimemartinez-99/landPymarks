@@ -240,7 +240,7 @@ const copyDay = (index) => {
 onMounted(() => {
   const uuid = route.params.uuid;
     // Note: hardcoded localhost URL.
-    fetch(`http://127.0.0.1:8000/retrieve_existing_map/${uuid}`)
+    fetch(`https://landpymarks.onrender.com/retrieve_existing_map/${uuid}`)
       .then(response => response.json())
       .then(data => {
         mapas.value = data.maps;

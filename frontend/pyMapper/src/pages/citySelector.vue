@@ -105,7 +105,7 @@ const onlyNumbers = (e) => {
 const generateRoute = async () => {
   loading.value = true;
   // Note: hardcoded localhost URL. In a real app this should be an env variable.
-  const url = `http://127.0.0.1:8000/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(days.value)}`;
+  const url = `https://landpymarks.onrender.com/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(days.value)}`;
 
   try {
     const response = await axios.post(url, null, {
