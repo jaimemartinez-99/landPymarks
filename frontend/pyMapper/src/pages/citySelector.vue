@@ -1,69 +1,82 @@
 <template>
   <v-container
     fluid
-    class="city-days-wrapper pa-0 d-flex flex-column align-center justify-center"
+    class="fill-height bg-background d-flex flex-column align-center justify-center position-relative overflow-hidden"
   >
-    <!-- Título Optimapper -->
-    <h1 class="optimapper-title mb-10">Optimapper</h1>
-    
-    <v-card
-      class="selector-card px-8 py-10"
-      elevation="6"
-      max-width="440"
-      outlined
-    >
-      <v-card-title class="selector-title">
-        Plan Your Trip
-      </v-card-title>
+    <!-- Decorative background element -->
+    <div class="blob-bg-2" />
 
-      <v-card-text>
-        <!-- Input ciudad (libre) -->
-        <v-text-field
-          v-model="city"
-          label="Enter city"
-          outlined
-          dense
-          clearable
-          placeholder="e.g., Córdoba"
-          class="mb-6"
-        />
-
-        <!-- Input días -->
-        <v-text-field
-          v-model.number="days"
-          label="Number of days"
-          type="number"
-          min="1"
-          outlined
-          dense
-          clearable
-          class="mb-6"
-          @keypress="onlyNumbers"
-        />
-      </v-card-text>
-
-      <v-card-actions class="justify-center">
-        <v-btn
-          color="primary"
-          :disabled="!isValid || loading"
-          @click="goToPlanner"
-          large
-          class="select-btn"
+    <v-fade-transition appear>
+      <div class="d-flex flex-column align-center z-index-1 w-100 px-4">
+        <!-- Título Optimapper -->
+        <h1
+          class="text-h3 text-md-h2 font-weight-black text-primary mb-10 text-center"
+          style="line-height: 1.2;"
         >
-          <template v-if="loading">
-            <v-progress-circular
-              indeterminate
-              size="24"
-              width="3"
-              color="#1e3a8a" 
-            ></v-progress-circular>
-          </template>
-          <template v-else>
-            Start Planning
-          </template>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+          Optimapper
+        </h1>
+        
+        <v-card
+          class="px-6 py-8 px-md-10 py-md-12 rounded-xl"
+          elevation="6"
+          width="100%"
+          max-width="480"
+          border
+        >
+          <div class="text-center mb-8">
+            <h2 class="text-h4 font-weight-bold text-high-emphasis">
+              Plan Your Trip
+            </h2>
+            <p class="text-body-2 text-medium-emphasis mt-2">
+              Enter your destination and available time
+            </p>
+          </div>
+
+          <v-card-text class="pa-0">
+            <!-- Input ciudad (libre) -->
+            <v-text-field
+              v-model="city"
+              label="Where to?"
+              variant="outlined"
+              color="primary"
+              bg-color="surface"
+              placeholder="e.g., Córdoba, Spain"
+              prepend-inner-icon="mdi-map-marker"
+              class="mb-4"
+            />
+
+            <!-- Input días -->
+            <v-text-field
+              v-model.number="days"
+              label="How many days?"
+              type="number"
+              min="1"
+              variant="outlined"
+              color="primary"
+              bg-color="surface"
+              prepend-inner-icon="mdi-calendar"
+              class="mb-6"
+              @keypress="onlyNumbers"
+            />
+          </v-card-text>
+
+          <v-card-actions class="pa-0">
+            <v-btn
+              color="primary"
+              block
+              size="x-large"
+              :disabled="!isValid || loading"
+              :loading="loading"
+              class="font-weight-bold"
+              elevation="2"
+              @click="goToPlanner"
+            >
+              Generate Itinerary
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </div>
+    </v-fade-transition>
   </v-container>
 </template>
 
@@ -73,7 +86,7 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 const city = ref('');
-const days = ref(0);
+const days = ref(null); // Changed to null so it's empty initially
 const loading = ref(false);
 const router = useRouter();
 
@@ -91,7 +104,8 @@ const onlyNumbers = (e) => {
 
 const generateRoute = async () => {
   loading.value = true;
-  const url = `https://landpymarks.onrender.com/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(days.value)}`;
+  // Note: hardcoded localhost URL. In a real app this should be an env variable.
+  const url = `http://127.0.0.1:8000/generate-route/?city=${encodeURIComponent(city.value)}&num_days=${parseInt(days.value)}`;
 
   try {
     const response = await axios.post(url, null, {
@@ -122,55 +136,19 @@ const goToPlanner = () => {
 </script>
 
 <style scoped>
-.city-days-wrapper {
-  min-height: 100vh;
-  background-color: #e0f2fe;
-  font-family: "Inter", sans-serif;
-  padding-top: 2rem;
+.z-index-1 {
+  z-index: 1;
 }
 
-.optimapper-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 800;
-  font-size: 3rem;
-  color: #1e3a8a;
-  text-align: center;
-  text-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
-  margin-bottom: 1.5rem;
-}
-
-.selector-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  color: #1e3a8a;
-  width: 100%;
-  max-width: 440px;
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
-}
-
-.selector-title {
-  font-weight: 700;
-  font-size: 2rem;
-  color: #1e3a8a;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.select-btn {
-  background-color: #3b82f6;
-  color: white !important;
-  font-weight: 600;
-  width: 100%;
-  transition: all 0.2s ease;
-}
-
-.select-btn:disabled {
-  background-color: #93c5fd;
-  cursor: not-allowed;
-}
-
-.select-btn:hover:not(:disabled) {
-  background-color: #2563eb;
-  transform: translateY(-2px);
+.blob-bg-2 {
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(var(--v-theme-secondary), 0.1) 0%, rgba(0,0,0,0) 70%);
+  filter: blur(80px);
+  z-index: 0;
+  border-radius: 50%;
 }
 </style>
