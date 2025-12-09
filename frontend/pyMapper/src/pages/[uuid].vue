@@ -256,7 +256,7 @@ onMounted(() => {
 );
 
 const goBack = () => {
-  router.push('/');
+  router.push('/cityselector');
 };
 </script>
 
