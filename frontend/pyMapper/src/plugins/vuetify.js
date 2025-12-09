@@ -17,21 +17,57 @@ export default createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'dark', // Tema oscuro por defecto
+    defaultTheme: 'light',
     themes: {
-      dark: {
-        dark: true, // Activa el tema oscuro
+      light: {
+        dark: false,
         colors: {
-          background: '#e0f2fe', // Fondo semitransparente
-          surface: '#92b5d6', // Color de superficie para tarjetas y contenedores
-          primary: '#1976d2', // Color primario
-          secondary: '#424242', // Color secundario
-          error: '#ff4444', // Color de error
-          info: '#33b5e5', // Color de información
-          success: '#00c851', // Color de éxito
-          warning: '#ffbb33', // Color de advertencia
+          background: '#F8FAFC',
+          surface: '#FFFFFF',
+          primary: '#2563EB',
+          secondary: '#475569',
+          error: '#EF4444',
+          info: '#3B82F6',
+          success: '#10B981',
+          warning: '#F59E0B',
         },
       },
+      dark: {
+        dark: true,
+        colors: {
+          background: '#0F172A',
+          surface: '#1E293B',
+          primary: '#3B82F6',
+          secondary: '#94A3B8',
+          error: '#F87171',
+          info: '#60A5FA',
+          success: '#34D399',
+          warning: '#FBBF24',
+        },
+      },
+    },
+  },
+  defaults: {
+    global: {
+      ripple: false,
+    },
+    VBtn: {
+      variant: 'flat',
+      height: 44,
+      class: 'text-none font-weight-bold rounded-lg',
+      elevation: 0,
+    },
+    VCard: {
+      elevation: 0,
+      border: 'thin',
+      class: 'rounded-xl',
+    },
+    VTextField: {
+      variant: 'outlined',
+      color: 'primary',
+      density: 'comfortable',
+      class: 'rounded-lg',
+      hideDetails: 'auto',
     },
   },
 });

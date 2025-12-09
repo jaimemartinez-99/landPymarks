@@ -1,118 +1,172 @@
 <template>
-  <v-container fluid class="landing-wrapper pa-0">
-    <v-row no-gutters class="split-hero">
-      <!-- IZQUIERDA 70% -->
+  <v-container
+    fluid
+    class="pa-0 fill-height bg-background"
+  >
+    <v-row
+      no-gutters
+      class="fill-height"
+    >
+      <!-- LEFT SIDE: Hero Content -->
       <v-col
         cols="12"
-        md="8"
-        class="hero-left d-flex flex-column justify-center px-10 py-12"
+        md="7"
+        lg="8"
+        class="d-flex flex-column justify-center align-start px-8 px-md-16 py-12 position-relative overflow-hidden"
       >
-        <div>
-          <h1 class="hero-title">
-            Smart City Routes<br />
-            for Modern Travelers
-          </h1>
-          <p class="hero-subtitle mt-4">
-            Discover top landmarks with optimized, time-saving routes tailored
-            to your trip duration.
-          </p>
-          <v-btn
-            class="start-btn mt-6"
+        <!-- Background decorative blob (optional) -->
+        <div class="blob-bg" />
+
+        <div
+          class="z-index-1"
+          style="max-width: 800px; width: 100%;"
+        >
+          <v-chip
             color="primary"
-            size="large"
-            @click="goToCitySelector"
+            variant="tonal"
+            class="mb-6 font-weight-bold"
+            size="small"
           >
-            Start Planning
-          </v-btn>
+            New: Smart Itineraries
+          </v-chip>
+
+          <h1
+            class="text-h2 text-md-h1 font-weight-black text-primary mb-6"
+            style="line-height: 1.1;"
+          >
+            Smart City Routes<br>
+            <span class="text-secondary">for Modern Travelers</span>
+          </h1>
+          
+          <p
+            class="text-body-1 text-md-h5 text-medium-emphasis mb-8"
+            style="max-width: 600px; line-height: 1.6;"
+          >
+            Discover top landmarks with optimized, time-saving routes tailored
+            to your trip duration. Experience the city like never before.
+          </p>
+          
+          <div class="d-flex gap-4 align-center">
+            <v-btn
+              color="primary"
+              size="x-large"
+              height="56"
+              elevation="4"
+              prepend-icon="mdi-map-search"
+              class="px-8"
+              @click="goToCitySelector"
+            >
+              Start Planning
+            </v-btn>
+            
+            <div class="d-flex ml-6">
+              <v-btn
+                icon="mdi-github"
+                variant="text"
+                color="medium-emphasis"
+                class="mr-2"
+                @click="handleClickGithub"
+              />
+              <v-btn
+                icon="mdi-linkedin"
+                variant="text"
+                color="medium-emphasis"
+                @click="handleClickLinkedin"
+              />
+            </div>
+          </div>
         </div>
       </v-col>
 
-      <!-- DERECHA 30% -->
+      <!-- RIGHT SIDE: Features & Visuals -->
       <v-col
         cols="12"
-        md="4"
-        class="hero-right d-flex flex-column justify-center align-center px-6 py-12"
+        md="5"
+        lg="4"
+        class="bg-surface d-flex flex-column justify-center align-center px-6 py-12 border-s"
+        style="min-height: 100vh;"
       >
-        <v-icon size="64" color="#3b82f6" class="mb-4"
-          >mdi-map-marker-path</v-icon
-        >
-        <h2 class="text-h6 font-weight-bold mb-2" style="color: #334155">
-          Optimize Your Journey
-        </h2>
-        <p
-          class="text-body-2 text-muted text-center mb-6"
-          style="max-width: 280px"
-        >
-          Our route optimizer calculates the best path between must-see
-          attractions in your selected city
-        </p>
-
-        <v-icon size="48" color="#3b82f6" class="mb-2"
-          >mdi-clock-outline</v-icon
-        >
-        <h2 class="text-h6 font-weight-bold mb-2" style="color: #334155">
-          Save Time
-        </h2>
-        <p
-          class="text-body-2 text-muted text-center mb-6"
-          style="max-width: 240px"
-        >
-          Avoid unnecessary detours. Focus on what matters most: exploring
-        </p>
-
-        <v-icon size="48" color="#3b82f6" class="mb-2">mdi-star-outline</v-icon>
-        <h2 class="text-h6 font-weight-bold mb-2" style="color: #334155">
-          Top Picks
-        </h2>
-        <p class="text-body-2 text-muted text-center" style="max-width: 240px">
-          You will receive the most popular and culturally relevant recommendations
-        </p>
-        <div class="flex mt-6">
-          <!-- Botón GitHub -->
-          <button
-            class="bg-white hover:bg-blue-100 text-blue-500 p-3 mr-3 rounded-full transition-shadow shadow-sm hover:shadow-md"
-            @click="handleClickGithub"
-            aria-label="GitHub"
+        <v-slide-y-transition group>
+          <div
+            key="feature-1"
+            class="feature-card text-center mb-10 w-100"
+            style="max-width: 320px"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#3b82f6">
-              <path
-                d="M12 0c-6.626 0-12 5.373-12 12 
-                  0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416
-                  -.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 
-                  1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604
-                  -2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221
-                  -.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23
-                  .957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 
-                  2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176
-                  .77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921
-                  .43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 
-                  4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-              />
-            </svg>
-          </button>
+            <v-avatar
+              color="primary"
+              variant="tonal"
+              size="80"
+              class="mb-6 rounded-xl"
+            >
+              <v-icon
+                size="40"
+                color="primary"
+              >
+                mdi-map-marker-path
+              </v-icon>
+            </v-avatar>
+            <h3 class="text-h5 font-weight-bold text-high-emphasis mb-3">
+              Optimize Your Journey
+            </h3>
+            <p class="text-body-2 text-medium-emphasis px-4">
+              Our route optimizer calculates the best path between must-see attractions.
+            </p>
+          </div>
 
-          <!-- Botón LinkedIn -->
-          <button
-            class="bg-white hover:bg-blue-100 text-blue-500 p-3 rounded-full transition-shadow shadow-sm hover:shadow-md"
-            @click="handleClickLinkedin"
-            aria-label="LinkedIn"
+          <div
+            key="feature-2"
+            class="feature-card text-center mb-10 w-100"
+            style="max-width: 320px"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#3b82f6">
-              <path
-                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 
-                  2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 
-                  19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 
-                  1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 
-                  1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 
-                  0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 
-                  7 2.476v6.759z"
-              />
-            </svg>
-          </button>
-        </div>
+            <v-avatar
+              color="secondary"
+              variant="tonal"
+              size="80"
+              class="mb-6 rounded-xl"
+            >
+              <v-icon
+                size="40"
+                color="secondary"
+              >
+                mdi-clock-fast
+              </v-icon>
+            </v-avatar>
+            <h3 class="text-h5 font-weight-bold text-high-emphasis mb-3">
+              Save Time
+            </h3>
+            <p class="text-body-2 text-medium-emphasis px-4">
+              Avoid unnecessary detours. Focus on what matters most: exploring.
+            </p>
+          </div>
+
+          <div
+            key="feature-3"
+            class="feature-card text-center w-100"
+            style="max-width: 320px"
+          >
+            <v-avatar
+              color="warning"
+              variant="tonal"
+              size="80"
+              class="mb-6 rounded-xl"
+            >
+              <v-icon
+                size="40"
+                color="warning"
+              >
+                mdi-star-outline
+              </v-icon>
+            </v-avatar>
+            <h3 class="text-h5 font-weight-bold text-high-emphasis mb-3">
+              Top Picks
+            </h3>
+            <p class="text-body-2 text-medium-emphasis px-4">
+              Receive the most popular and culturally relevant recommendations.
+            </p>
+          </div>
+        </v-slide-y-transition>
       </v-col>
     </v-row>
-    
   </v-container>
 </template>
 
@@ -138,56 +192,19 @@ const goToCitySelector = () => {
 </script>
 
 <style scoped>
-.landing-wrapper {
-  background-color: #f1f5f9;
-  min-height: 100vh;
-  font-family: "Inter", sans-serif;
+.z-index-1 {
+  z-index: 1;
 }
 
-.split-hero {
-  min-height: 100vh;
-}
-
-.hero-left {
-  background-color: #e0f2fe;
-  color: #1e3a8a;
-}
-
-.hero-title {
-  font-size: 5rem;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #1e3a8a;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: #475569;
-  max-width: 600px;
-}
-
-.start-btn {
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 14px 32px;
-  background-color: #3b82f6;
-  color: white;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
-  transition: all 0.2s ease;
-}
-
-.start-btn:hover {
-  background-color: #2563eb;
-  transform: translateY(-2px);
-}
-
-.hero-right {
-  background-color: #f8fafc;
-  color: #1f2937;
-  text-align: center;
-}
-
-.text-muted {
-  color: #64748b;
+.blob-bg {
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(var(--v-theme-primary), 0.1) 0%, rgba(0,0,0,0) 70%);
+  filter: blur(60px);
+  z-index: 0;
+  border-radius: 50%;
 }
 </style>

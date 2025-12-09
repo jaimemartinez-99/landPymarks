@@ -1,93 +1,156 @@
 <template>
-  <v-container class="maps-container">
-    <v-row justify="center">
-      <v-col cols="12" lg="10" xl="8">
-        <div class="header-wrapper mb-6 text-center">
-          <h1 class="optimapper-title mb-1">Optimapper</h1>
-          <v-card-title class="trip-title text-h4 font-weight-bold">
-            {{ capitalize(ciudad) }}
-            <span class="days-badge ml-3">{{ num_dias }} {{ pluralizeDay(num_dias) }}</span>
-          </v-card-title>
-        </div>
+  <v-container
+    fluid
+    class="fill-height bg-background pa-0 align-start"
+  >
+    <div class="w-100 pa-6 pa-md-10">
+      <div class="header-wrapper mb-8 text-center">
+        <v-btn
+          variant="text"
+          color="primary"
+          class="mb-4"
+          prepend-icon="mdi-arrow-left"
+          @click="goBack"
+        >
+          Back to Planner
+        </v-btn>
 
-        <v-card elevation="10" rounded="lg">
-          <v-expansion-panels class="day-panels">
+        <h1 class="text-h3 font-weight-black text-primary mb-2">
+          {{ capitalize(ciudad) }}
+        </h1>
+        <v-chip
+          color="secondary"
+          variant="tonal"
+          size="large"
+          class="font-weight-bold"
+        >
+          {{ num_dias }} {{ pluralizeDay(num_dias) }} Trip
+        </v-chip>
+      </div>
+
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          lg="10"
+          xl="8"
+        >
+          <v-expansion-panels
+            variant="popout"
+            class="day-panels"
+          >
             <v-expansion-panel
               v-for="(mapa, index) in mapas"
               :key="index"
+              elevation="2"
+              rounded="xl"
             >
-              <v-expansion-panel-title class="day-title px-6">
-                <template v-slot:default="{ expanded }">
-                  <v-row no-gutters align="center">
+              <v-expansion-panel-title class="py-4">
+                <template #default="{ expanded }">
+                  <v-row
+                    no-gutters
+                    align="center"
+                  >
                     <v-col cols="auto">
-                      <v-icon large color="blue" class="mr-3">mdi-calendar</v-icon>
+                      <v-avatar
+                        color="primary"
+                        variant="tonal"
+                        class="mr-4"
+                      >
+                        <span class="font-weight-bold">{{ index + 1 }}</span>
+                      </v-avatar>
                     </v-col>
                     <v-col>
-                      <span class="text-h5 font-weight-bold">Day {{ index + 1 }}</span>
+                      <span class="text-h6 font-weight-bold">Day {{ index + 1 }} Itinerary</span>
                     </v-col>
                   </v-row>
                 </template>
               </v-expansion-panel-title>
               
-              <v-expansion-panel-text class="panel-content">
+              <v-expansion-panel-text class="pa-0">
                 <v-row no-gutters>
-                  <v-col cols="12" md="8" class="map-col">
-                    <div class="map-wrapper">
-                      <div class="map-content" v-html="mapa"></div>
+                  <!-- MAP COLUMN -->
+                  <v-col
+                    cols="12"
+                    md="8"
+                    class="map-col"
+                  >
+                    <div class="map-wrapper rounded-lg overflow-hidden ma-2 border">
+                      <div
+                        class="map-content"
+                        v-html="mapa"
+                      />
                     </div>
                   </v-col>
                   
-                  <v-col cols="12" md="4" class="places-col">
-                    <v-card class="places-card h-120" elevation="0" rounded="0">
-                      <v-card-text class="px-4 pb-0">
-                        <v-list lines="two" density="comfortable">
-                          <v-list-item
-                            v-for="(place, pIndex) in extractPlaces(mapa)"
-                            :key="pIndex"
-                            class="px-0"
-                          >
-                            <template v-slot:prepend>
-                              <v-avatar size="24" color="blue-lighten-5">
-                                <span class="text-caption text-blue">{{ pIndex + 1 }}</span>
-                              </v-avatar>
-                            </template>
-                            <v-list-item-title class="font-weight-bold text-caption">{{ place }}</v-list-item-title>
-                          </v-list-item>
-                        </v-list>
-                      </v-card-text>
-                      <v-card-actions class="px-4 pb-4">
+                  <!-- PLACES LIST COLUMN -->
+                  <v-col
+                    cols="12"
+                    md="4"
+                    class="places-col border-s"
+                  >
+                    <div class="d-flex flex-column h-100">
+                      <div class="px-4 py-3 bg-surface-light border-b">
+                        <span class="text-subtitle-2 text-medium-emphasis font-weight-bold text-uppercase">Destinations</span>
+                      </div>
+                      <v-list
+                        class="flex-grow-1 overflow-y-auto"
+                        style="max-height: 500px;"
+                        lines="two"
+                      >
+                        <v-list-item
+                          v-for="(place, pIndex) in extractPlaces(mapa)"
+                          :key="pIndex"
+                          class="px-4 py-2"
+                        >
+                          <template #prepend>
+                            <v-icon
+                              size="small"
+                              color="primary"
+                              class="mr-3"
+                            >
+                              mdi-map-marker
+                            </v-icon>
+                          </template>
+                          <v-list-item-title class="text-body-2 font-weight-medium">
+                            {{ place }}
+                          </v-list-item-title>
+                        </v-list-item>
+                      </v-list>
+                      
+                      <div class="pa-4 border-t mt-auto">
                         <v-btn
-                          color="#1e3a8a"
-                          variant="outlined"
+                          color="primary"
+                          variant="tonal"
                           block
+                          prepend-icon="mdi-content-copy"
                           @click="copyDay(index)"
                         >
-                          <v-icon left>mdi-content-copy</v-icon>
                           Copy Itinerary
                         </v-btn>
-                      </v-card-actions>
-                    </v-card>
+                      </div>
+                    </div>
                   </v-col>
                 </v-row>
               </v-expansion-panel-text>
             </v-expansion-panel>
           </v-expansion-panels>
 
-          <v-card-actions class="px-6 pb-6 pt-3">
+          <div class="d-flex justify-center mt-12 pb-10">
             <v-btn
-              color="#e0f2fe"
-              size="large"
-              block
+              color="primary"
+              size="x-large"
+              variant="flat"
+              width="280"
+              prepend-icon="mdi-plus"
+              class="font-weight-bold"
               @click="goBack"
-              class="back-btn"
             >
-              <v-icon left>mdi-arrow-left</v-icon>
               Plan Another Trip
             </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+          </div>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -97,7 +160,7 @@ import { useRouter, useRoute } from 'vue-router';
 
 const mapas = ref([]); 
 const ciudad = ref(''); 
-let num_dias = 0;
+const num_dias = ref(0); // Made reactive
 const router = useRouter();
 const route = useRoute();
 
@@ -180,7 +243,7 @@ onMounted(() => {
       .then(data => {
         mapas.value = data.maps;
         ciudad.value = data.city; 
-        num_dias = data.num_days;
+        num_dias.value = data.num_days;
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -190,70 +253,17 @@ onMounted(() => {
 );
 
 const goBack = () => {
-  router.push('/');
+  router.push('/cityselector');
 };
 </script>
 
 <style scoped>
-.maps-container {
-  padding-top: 30px;
-  padding-bottom: 60px;
-  min-height: 100vh;
-  background-color: #e0f2fe;
-}
-
-.optimapper-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 800;
-  font-size: 2.2rem;
-  color: #1e3a8a;
-  text-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
-}
-
-.trip-title {
-  color: #1e3a8a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 8px 0 !important;
-}
-
-.days-badge {
-  background-color: #3b82f6;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 1.2rem;
-}
-
-.header-wrapper {
-  margin-bottom: 24px;
-}
-
-.day-panels {
-  border-radius: 0 !important;
-}
-
-.day-title {
-  background-color: #c6daed !important;
-  min-height: 72px;
-}
-
-.panel-content {
-  padding: 0 !important;
-}
-
-.map-col {
-  position: relative;
-  border-right: 1px solid #e0e0e0;
-}
-
 .map-wrapper {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
   overflow: hidden;
+  background-color: #f0f0f0;
 }
 
 .map-content {
@@ -265,27 +275,8 @@ const goBack = () => {
   border: none;
 }
 
-.places-col {
-  background-color: #92b5d6;
-}
-
-.places-card {
-  border-left: none !important;
-  background-color: #92b5d6;
-}
-
-.back-btn {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
 /* Responsive adjustments */
 @media (max-width: 959px) {
-  .map-col {
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
   .map-wrapper {
     padding-bottom: 75%; /* Taller aspect ratio for mobile */
   }

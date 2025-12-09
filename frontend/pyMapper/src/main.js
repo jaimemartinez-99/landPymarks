@@ -6,6 +6,8 @@
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+import '@/styles/main.scss'
+
 
 // Components
 import App from './App.vue'

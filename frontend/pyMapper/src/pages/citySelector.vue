@@ -1,69 +1,78 @@
 <template>
   <v-container
     fluid
-    class="city-days-wrapper pa-0 d-flex flex-column align-center justify-center"
+    class="fill-height pa-0 d-flex flex-column align-center justify-center position-relative overflow-hidden animated-gradient-bg"
   >
-    <!-- Título Optimapper -->
-    <h1 class="optimapper-title mb-10">Optimapper</h1>
-    
-    <v-card
-      class="selector-card px-8 py-10"
-      elevation="6"
-      max-width="440"
-      outlined
-    >
-      <v-card-title class="selector-title">
-        Plan Your Trip
-      </v-card-title>
+    <div class="overlay-pattern"></div>
 
-      <v-card-text>
-        <!-- Input ciudad (libre) -->
-        <v-text-field
-          v-model="city"
-          label="Enter city"
-          outlined
-          dense
-          clearable
-          placeholder="e.g., Córdoba"
-          class="mb-6"
-        />
-
-        <!-- Input días -->
-        <v-text-field
-          v-model.number="days"
-          label="Number of days"
-          type="number"
-          min="1"
-          outlined
-          dense
-          clearable
-          class="mb-6"
-          @keypress="onlyNumbers"
-        />
-      </v-card-text>
-
-      <v-card-actions class="justify-center">
-        <v-btn
-          color="primary"
-          :disabled="!isValid || loading"
-          @click="goToPlanner"
-          large
-          class="select-btn"
+    <v-fade-transition appear>
+      <div class="d-flex flex-column align-center z-index-1 w-100 px-4">
+        
+        <v-card
+          class="glass-card px-8 py-10 rounded-xl"
+          elevation="10"
+          width="100%"
+          max-width="500"
         >
-          <template v-if="loading">
-            <v-progress-circular
-              indeterminate
-              size="24"
-              width="3"
-              color="#1e3a8a" 
-            ></v-progress-circular>
-          </template>
-          <template v-else>
-            Start Planning
-          </template>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+          <div class="text-center mb-8">
+            <h1 class="text-h3 font-weight-black mb-2 text-primary">
+              Optimapper
+            </h1>
+            <p class="text-subtitle-1 text-medium-emphasis">
+              Design Your Perfect Journey
+            </p>
+          </div>
+
+          <v-card-text class="pa-0 mt-6">
+            <v-label class="mb-2 font-weight-bold ml-1 text-caption text-uppercase text-medium-emphasis">Destination</v-label>
+            <v-text-field
+              v-model="city"
+              placeholder="e.g., Paris, Tokyo, New York"
+              variant="outlined"
+              color="primary"
+              bg-color="background"
+              density="comfortable"
+              prepend-inner-icon="mdi-map-marker-radius-outline"
+              class="mb-4 rounded-lg"
+              hide-details="auto"
+            ></v-text-field>
+
+            <v-label class="mb-2 font-weight-bold ml-1 text-caption text-uppercase text-medium-emphasis">Duration</v-label>
+            <v-text-field
+              v-model.number="days"
+              placeholder="Number of days"
+              type="number"
+              min="1"
+              variant="outlined"
+              color="primary"
+              bg-color="background"
+              density="comfortable"
+              prepend-inner-icon="mdi-calendar-clock-outline"
+              class="mb-8 rounded-lg"
+              hide-details="auto"
+              @keypress="onlyNumbers"
+            ></v-text-field>
+          </v-card-text>
+
+          <v-card-actions class="pa-0">
+            <v-btn
+              color="background"
+              block
+              size="x-large"
+              height="56"
+              :disabled="!isValid || loading"
+              :loading="loading"
+              class="text-body-1 font-weight-bold rounded-lg gradient-btn text-white"
+              elevation="4"
+              @click="goToPlanner"
+            >
+              Start Adventure
+              <v-icon end icon="mdi-arrow-right" class="ml-2"></v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </div>
+    </v-fade-transition>
   </v-container>
 </template>
 
@@ -73,7 +82,7 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 const city = ref('');
-const days = ref(0);
+const days = ref(null);
 const loading = ref(false);
 const router = useRouter();
 
@@ -81,7 +90,6 @@ const isValid = computed(() => {
   return city.value.trim() !== '' && days.value > 0;
 });
 
-// Función para permitir solo números en input días
 const onlyNumbers = (e) => {
   const char = String.fromCharCode(e.keyCode);
   if (!/[0-9]/.test(char)) {
@@ -122,55 +130,54 @@ const goToPlanner = () => {
 </script>
 
 <style scoped>
-.city-days-wrapper {
-  min-height: 100vh;
-  background-color: #e0f2fe;
-  font-family: "Inter", sans-serif;
-  padding-top: 2rem;
+.animated-gradient-bg {
+  background: linear-gradient(-45deg, #f8fafc, #e2e8f0, #bfdbfe, #e0f2fe);
+  background-size: 400% 400%;
+  animation: gradient 20s ease infinite;
 }
 
-.optimapper-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 800;
-  font-size: 3rem;
-  color: #1e3a8a;
-  text-align: center;
-  text-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
-  margin-bottom: 1.5rem;
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.selector-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  color: #1e3a8a;
+.overlay-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 440px;
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  height: 100%;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
 }
 
-.selector-title {
-  font-weight: 700;
-  font-size: 2rem;
-  color: #1e3a8a;
-  text-align: center;
-  margin-bottom: 2rem;
+.z-index-1 {
+  z-index: 1;
 }
 
-.select-btn {
-  background-color: #3b82f6;
+.glass-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+}
+
+.gradient-btn {
+  background: linear-gradient(90deg, #2563EB 0%, #3B82F6 100%) !important;
   color: white !important;
-  font-weight: 600;
-  width: 100%;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.select-btn:disabled {
-  background-color: #93c5fd;
-  cursor: not-allowed;
-}
-
-.select-btn:hover:not(:disabled) {
-  background-color: #2563eb;
+.gradient-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.5);
 }
 </style>

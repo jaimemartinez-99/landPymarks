@@ -1,4 +1,5 @@
 import folium
+from folium.plugins import BeautifyIcon
 import numpy as np
 import networkx as nx
 import time
@@ -49,7 +50,14 @@ def solve_tsp_and_create_map(coordinates, names):
         folium.Marker(
             location=coordinates[idx],
             popup=f"Point {i + 1}: {names[idx]}",
-            icon=folium.Icon(color="blue", icon="info-sign"),
+            icon=BeautifyIcon(
+                icon="arrow-down",
+                icon_shape="marker",
+                number=i + 1,
+                border_color="blue",
+                background_color="white",
+                text_color="blue"
+            ),
         ).add_to(marker_group)
 
     marker_group.add_to(m)
