@@ -186,7 +186,6 @@ const extractPlaces = (htmlContent) => {
 
     const cleanContent = unescapeHtml(htmlContent);
 
-    // Regex adjustments to match typical leaflet output or markers
     const pointMatches = Array.from(cleanContent.matchAll(/Point \d+:\s*([^<]+)/g))
       .map(match => match[1].trim())
       .filter(name => name.length > 0);
@@ -239,17 +238,15 @@ const copyDay = (index) => {
 
 onMounted(() => {
   const uuid = route.params.uuid;
-    // Note: hardcoded localhost URL.
     fetch(`https://landpymarks.onrender.com/retrieve_existing_map/${uuid}`)
       .then(response => response.json())
       .then(data => {
         mapas.value = data.maps;
         ciudad.value = data.city; 
-        num_dias.value = data.num_days; // Update reactive ref
+        num_dias.value = data.num_days;
       })
       .catch(error => {
         console.error('Error fetching data:', error);
-        // In dev, we might stay here or redirect. Redirecting is safer.
         router.push('/');
       });
   }

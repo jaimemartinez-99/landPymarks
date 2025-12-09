@@ -22,10 +22,10 @@ export default createVuetify({
       light: {
         dark: false,
         colors: {
-          background: '#F8FAFC', // Slate 50
+          background: '#F8FAFC',
           surface: '#FFFFFF',
-          primary: '#2563EB', // Blue 600
-          secondary: '#475569', // Slate 600
+          primary: '#2563EB',
+          secondary: '#475569',
           error: '#EF4444',
           info: '#3B82F6',
           success: '#10B981',
@@ -35,10 +35,10 @@ export default createVuetify({
       dark: {
         dark: true,
         colors: {
-          background: '#0F172A', // Slate 900
-          surface: '#1E293B', // Slate 800
-          primary: '#3B82F6', // Blue 500
-          secondary: '#94A3B8', // Slate 400
+          background: '#0F172A',
+          surface: '#1E293B',
+          primary: '#3B82F6',
+          secondary: '#94A3B8',
           error: '#F87171',
           info: '#60A5FA',
           success: '#34D399',
@@ -59,7 +59,7 @@ export default createVuetify({
     },
     VCard: {
       elevation: 0,
-      border: 'thin', // utilizing Vuetify 3 border support if available, or just class
+      border: 'thin',
       class: 'rounded-xl',
     },
     VTextField: {
