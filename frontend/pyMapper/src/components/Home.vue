@@ -84,6 +84,7 @@
         md="5"
         lg="4"
         class="bg-surface d-flex flex-column justify-center align-center px-6 py-12 border-s"
+        style="min-height: 100vh;"
       >
         <v-slide-y-transition group>
           <div
